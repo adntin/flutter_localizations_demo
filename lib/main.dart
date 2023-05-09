@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'demo_localizations.dart';
-import 'demo_localizations_delegate.dart';
+import 'l10n/localization_intl.dart';
+
+// import 'demo_localizations.dart';
+// import 'demo_localizations_delegate.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,18 +18,42 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: const [
-        // 本地化的代理类
+        // 1. 本地化的代理类
+        // 1.1 GlobalMaterialLocalizations.delegate 为 Material 组件库提供本地化的字符串和一些其他的值。
         GlobalMaterialLocalizations.delegate,
+        // 1.2 GlobalWidgetsLocalizations.delegate 为 widgets 库定义了默认的文本排列方向，由左到右或者由右到左。
         GlobalWidgetsLocalizations.delegate,
-        // 注册我们的Delegate
+        GlobalCupertinoLocalizations.delegate,
+        // 2. 注册我们的 Delegate
         DemoLocalizationsDelegate(),
       ],
       supportedLocales: const [
         Locale('en', 'US'), // 美国英语
         Locale('zh', 'CN'), // 中文简体
-        //其他Locales
       ],
-      title: 'Flutter Demo',
+      // title: 'Flutter Demo',
+      onGenerateTitle: (context) {
+        // 此时context在Localizations的子树中
+        return DemoLocalizations.of(context).title;
+      },
+      // localeResolutionCallback: (deviceLocale, supportedLocales) {
+      //   for (var locale in supportedLocales) {
+      //     if (locale.languageCode == deviceLocale!.languageCode &&
+      //         locale.countryCode == deviceLocale.countryCode) {
+      //       return deviceLocale;
+      //     }
+      //   }
+      //   return supportedLocales.first;
+      // },
+      // localeListResolutionCallback:
+      //     (List<Locale>? locales, Iterable<Locale> supportedLocales) {
+      //   print(locales);
+      //   print(supportedLocales);
+      //   if (locales == null) {
+      //     return const Locale('en', 'US');
+      //   }
+      //   return const Locale('en', 'US');
+      // },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -112,13 +138,37 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            Text(Localizations.localeOf(context).toString()),
+            Text(DemoLocalizations.of(context).remainingEmailsMessage(42)),
+            const Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     print('123123');
+            //     DemoLocalizations.load(const Locale('en', 'US'));
+            //   },
+            //   child: Text(DemoLocalizations.of(context).switchLanguage),
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: Language.languageList()
+            //       .map(
+            //         (e) => Padding(
+            //           padding: EdgeInsets.only(right: 10),
+            //           child: ElevatedButton(
+            //             onPressed: () {
+            //               changeLanguage(
+            //                   e, context); //use state management here
+            //             },
+            //             child: Text("${e.name} ${e.flag}"),
+            //           ),
+            //         ),
+            //       )
+            //       .toList(),
+            // ),
           ],
         ),
       ),

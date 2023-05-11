@@ -1,0 +1,7 @@
+{
+    "@@locale": "zh_HK",
+    "helloWorld": "妳好, 世界! zh_HK",
+    "@helloWorld": {
+        "description": "The conventional newborn programmer greeting"
+    }
+}

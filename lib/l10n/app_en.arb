@@ -1,0 +1,65 @@
+{
+    "@@locale": "en",
+    "helloWorld": "Hello World",
+    "@helloWorld": {
+        "description": "The conventional newborn programmer greeting"
+    },
+    "helloSomebody": "Hell {userName}",
+    "@helloSomebody": {
+        "description": "A message with a single parameter",
+        "placeholders": {
+            "userName": {
+                "type": "String",
+                "example": "Bob"
+            }
+        }
+    },
+    "helloWorldOn": "Hello World on {date}",
+    "@helloWorldOn": {
+        "description": "A message with a date parameter",
+        "placeholders": {
+            "date": {
+                "type": "DateTime",
+                "format": "yMd"
+            }
+        }
+    },
+    "title": "Flutter App",
+    "@title": {
+        "description": "Title for the Demo application",
+        "type": "text",
+        "placeholders_order": [],
+        "placeholders": {}
+    },
+    "remainingEmailsMessage": "{howMany,plural, =0{There are no emails left for {userName}.}=1{There is {howMany} email left for {userName}.}other{There are {howMany} emails left for {userName}.}}",
+    "@remainingEmailsMessage": {
+        "description": "How many emails remain after archiving.",
+        "type": "text",
+        "placeholders_order": [
+            "howMany",
+            "userName"
+        ],
+        "placeholders": {
+            "howMany": {
+                "type": "int"
+            },
+            "userName": {
+                "type": "String",
+                "example": "Bob"
+            }
+        }
+    },
+    "totalPrice": "Total price: {value}",
+    "@totalPrice": {
+        "description": "A message with a formatted int parameter",
+        "placeholders": {
+            "value": {
+                "type": "num",
+                "format": "simpleCurrency",
+                "optionalParameters": {
+                    "decimalDigits": 2
+                }
+            }
+        }
+    }
+}

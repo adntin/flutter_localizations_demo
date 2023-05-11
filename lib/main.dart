@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'l10n/localization_intl.dart';
-
-// import 'demo_localizations.dart';
-// import 'demo_localizations_delegate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,57 +8,54 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: const [
-        // 1. 本地化的代理类
-        // 1.1 GlobalMaterialLocalizations.delegate 为 Material 组件库提供本地化的字符串和一些其他的值。
-        GlobalMaterialLocalizations.delegate,
-        // 1.2 GlobalWidgetsLocalizations.delegate 为 widgets 库定义了默认的文本排列方向，由左到右或者由右到左。
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        // 2. 注册我们的 Delegate
-        DemoLocalizationsDelegate(),
-      ],
-      supportedLocales: const [
-        Locale('en', 'US'), // 美国英语
-        Locale('zh', 'CN'), // 中文简体
-      ],
-      // title: 'Flutter Demo',
+      // // localizationDelegates 数组是用于生成本地化值集合的工厂。
+      // localizationsDelegates: const [
+      //   // 1. 本地化的代理类
+      //   // 1.1 GlobalMaterialLocalizations.delegate 为 Material 组件库提供本地化的字符串和一些其他的值。
+      //   GlobalMaterialLocalizations.delegate,
+      //   // 1.2 GlobalWidgetsLocalizations.delegate 为 widgets 库定义了默认的文本排列方向，由左到右或者由右到左。
+      //   GlobalWidgetsLocalizations.delegate,
+      //   GlobalCupertinoLocalizations.delegate,
+      //   // 2. 注册我们的 Delegate
+      //   DemoLocalizationsDelegate(),
+      // ],
+      // supportedLocales: const [
+      //   Locale('en', 'US'), // 美国英语
+      //   Locale('zh', 'CN'), // 中文简体
+      // ],
+      // locale: const Locale('zh', 'HK'), // 赋值表示: 程序语言 > 系统语言
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      // title: 'Flutter App',
       onGenerateTitle: (context) {
         // 此时context在Localizations的子树中
-        return DemoLocalizations.of(context).title;
+        return AppLocalizations.of(context).title;
       },
-      // localeResolutionCallback: (deviceLocale, supportedLocales) {
-      //   for (var locale in supportedLocales) {
-      //     if (locale.languageCode == deviceLocale!.languageCode &&
-      //         locale.countryCode == deviceLocale.countryCode) {
-      //       return deviceLocale;
-      //     }
-      //   }
-      //   return supportedLocales.first;
-      // },
-      // localeListResolutionCallback:
-      //     (List<Locale>? locales, Iterable<Locale> supportedLocales) {
-      //   print(locales);
-      //   print(supportedLocales);
-      //   if (locales == null) {
-      //     return const Locale('en', 'US');
-      //   }
-      //   return const Locale('en', 'US');
-      // },
+      localeListResolutionCallback: (locales, supportedLocales) {
+        print("deviceLocales: $locales, supportedLocales: $supportedLocales");
+        if (locales == null) {
+          return supportedLocales.first; // null ==> en
+        }
+        for (Locale l in locales) {
+          Iterable<Locale> supportedLocales1 =
+              supportedLocales.where((s) => s.languageCode == l.languageCode);
+          if (supportedLocales1.isEmpty) {
+            return supportedLocales.first; // ja ==> en
+          }
+          Iterable<Locale> supportedLocales2 =
+              supportedLocales1.where((s) => s.countryCode == l.countryCode);
+          if (supportedLocales2.isNotEmpty) {
+            return supportedLocales2.first; // zh_CN ==> zh_CN
+          } else {
+            return Locale(l.languageCode); // zh_TW ==> zh
+          }
+        }
+        return supportedLocales.first; // 兜底 ==> en (这行代码不应该执行)
+      },
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -74,15 +66,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -90,93 +73,60 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        // title: Text(widget.title),
-        title: Text(DemoLocalizations.of(context).title),
+        title: Text(AppLocalizations.of(context).title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(Localizations.localeOf(context).toString()),
-            Text(DemoLocalizations.of(context).remainingEmailsMessage(42)),
-            const Text('You have pushed the button this many times:'),
+            Text(AppLocalizations.of(context).helloWorld),
+            Text(AppLocalizations.of(context).helloSomebody('Devin')),
+            Text(AppLocalizations.of(context)
+                .helloWorldOn(DateTime.utc(1996, 7, 10))),
+            Text(AppLocalizations.of(context).totalPrice(12345.236)),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+                AppLocalizations.of(context).remainingEmailsMessage(42, 'Dan')),
+            // Localizations.override(
+            //   context: context,
+            //   locale: const Locale('es'), // 西班牙语
+            //   // Using a Builder to get the correct BuildContext.
+            //   // Alternatively, you can create a new widget and Localizations.override
+            //   // will pass the updated BuildContext to the new widget.
+            //   child: Builder(
+            //     builder: (context) {
+            //       return CalendarDatePicker(
+            //         initialDate: DateTime.now(),
+            //         firstDate: DateTime(1900),
+            //         lastDate: DateTime(2100),
+            //         onDateChanged: (value) {},
+            //       );
+            //     },
+            //   ),
+            // ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: AppLocalizations.supportedLocales
+                  .toList()
+                  .map((Locale locale) {
+                if (locale.countryCode == null) {
+                  return Container();
+                }
+                return ElevatedButton(
+                  onPressed: () {
+                    print(locale.toString());
+                  },
+                  child: Text(locale.toString()),
+                );
+              }).toList(),
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     print('123123');
-            //     DemoLocalizations.load(const Locale('en', 'US'));
-            //   },
-            //   child: Text(DemoLocalizations.of(context).switchLanguage),
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: Language.languageList()
-            //       .map(
-            //         (e) => Padding(
-            //           padding: EdgeInsets.only(right: 10),
-            //           child: ElevatedButton(
-            //             onPressed: () {
-            //               changeLanguage(
-            //                   e, context); //use state management here
-            //             },
-            //             child: Text("${e.name} ${e.flag}"),
-            //           ),
-            //         ),
-            //       )
-            //       .toList(),
-            // ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

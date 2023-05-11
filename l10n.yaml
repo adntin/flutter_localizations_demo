@@ -1,0 +1,18 @@
+# 指定输入文件在 ${FLUTTER_PROJECT}/lib/l10n 中
+arb-dir: lib/l10n
+# app_en.arb 文件提供模板(基准)
+template-arb-file: app_en.arb
+# 生成的本地化dart代码文件, 默认为 app_localizations.dart 文件
+output-localization-file: app_localizations.dart
+# 修改 app_localizations.dart 文件的 supportedLocales 顺序, 程序不支持系统语言时, 采用第一个语种
+preferred-supported-locales: [en]
+# 避免每次使用都要加空判断, 比如: "AppLocalizations.of(context)!"
+nullable-getter: false
+# 未翻译部分, 在根目录下
+untranslated-messages-file: l10n_untranslated.txt
+# -------------
+# 如果没设置以下两个配置, 生成的dart代码在 .dart_tool/flutter_gen/gen_l10n
+# 如果有设置以下两个配置, 生成的dart代码在 lib/l10n/gen_l10n
+# synthetic-package: false
+# output-dir: lib/l10n/gen_l10n
+# arb-dir: lib/l10n/arb

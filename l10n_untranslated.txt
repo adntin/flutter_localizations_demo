@@ -1,0 +1,48 @@
+{
+  "en_GB": [
+    "helloSomebody",
+    "helloWorldOn",
+    "title",
+    "remainingEmailsMessage",
+    "totalPrice"
+  ],
+
+  "en_US": [
+    "helloSomebody",
+    "helloWorldOn",
+    "title",
+    "remainingEmailsMessage",
+    "totalPrice"
+  ],
+
+  "es": [
+    "helloSomebody",
+    "helloWorldOn",
+    "title",
+    "remainingEmailsMessage",
+    "totalPrice"
+  ],
+
+  "zh": [
+    "helloSomebody",
+    "helloWorldOn",
+    "remainingEmailsMessage",
+    "totalPrice"
+  ],
+
+  "zh_CN": [
+    "helloSomebody",
+    "helloWorldOn",
+    "title",
+    "remainingEmailsMessage",
+    "totalPrice"
+  ],
+
+  "zh_HK": [
+    "helloSomebody",
+    "helloWorldOn",
+    "title",
+    "remainingEmailsMessage",
+    "totalPrice"
+  ]
+}
